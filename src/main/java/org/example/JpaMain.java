@@ -19,18 +19,10 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // jpa는 테이블을 대상으로 쿼리하지 않는다.
-            // 멤버 객체를 가져오는 jpql
-            // 객체를 대상으로 하는 객체 지향 쿼리 -> db에 맞게 번역을 해준다.
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(1)
-                    .setMaxResults(8)
-                    .getResultList();
-
-            for (Member member : result) {
-                System.out.println("member = " + member.getName());
-            }
-
+            Member member = em.find(Member.class, 150L);
+            member.setName("ZZZZ");
+            // em.persist(member); JPA를 잘 모르면 변경 사항을 저장해야 하는 것으로 생각하지만
+            // JPA는 자바 컬렉션처럼 db를 사용하는 것. 변경하면 변경된다.
 
             tx.commit();
         } catch (Exception e) {
